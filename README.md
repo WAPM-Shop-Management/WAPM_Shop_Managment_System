@@ -4,12 +4,12 @@
 Java , Spring boot , SQL , React.js 
 
 ### Steps to run project
-1. `Clone project from git reposiory`
+1. `Clone project from git reposiory`<br/>
    https://github.com/WAPM-Shop-Management/WAPM_Shop_Managment_System.git <br/>
    <br/>
 2. `Inject all dependencies required`<br/>
    <br/>
-3. `Bumb sql database if you need`<br/>
+3. `Dump sql database if you need`<br/>
    <br/>
 4. `Build and deploy the project`<br/>
 
