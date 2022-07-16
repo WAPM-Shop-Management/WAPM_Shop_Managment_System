@@ -16,6 +16,7 @@
     <artifactId>WAPM_Shop_Managment_System</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -76,10 +77,14 @@
     </dependencies>
 
     <build>
+        <finalName>wapm-shopping</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>/opt/tomcat/webapps</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>
