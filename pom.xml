@@ -13,7 +13,7 @@
         </parent>
 
     <groupId>org.example</groupId>
-    <artifactId>WAPM_Shop_Managment_System</artifactId>
+    <artifactId>wapm-shopping</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
