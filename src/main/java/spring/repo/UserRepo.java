@@ -5,5 +5,5 @@ import spring.entity.User;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-    User findByNic(String nic);
+    User findByNicAndTelAndEmail(String nic,String tel,String email);
 }

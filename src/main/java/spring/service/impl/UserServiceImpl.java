@@ -28,9 +28,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int createUser(UserCreateDTO dto) {
         int userId =0;
-        User user = userRepo.findByNic(dto.getNic());
+        User user = userRepo.findByNicAndTelAndEmail(dto.getNic(),dto.getTelNo(),dto.getEmail());
 
-        if(user != null){
+        if(user == null){
             User userMap = mapper.map(dto, User.class);
             User saveUser = userRepo.save(userMap);
             userId =saveUser.getId();
