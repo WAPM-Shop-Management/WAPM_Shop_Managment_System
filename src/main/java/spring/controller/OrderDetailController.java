@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.dto.OrderDetailDTO;
-import spring.dto.UserCreateDTO;
 import spring.service.OrderDetailService;
 import spring.util.StandardResponse;
 
