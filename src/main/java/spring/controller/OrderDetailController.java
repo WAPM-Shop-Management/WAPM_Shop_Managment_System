@@ -34,7 +34,7 @@ public class OrderDetailController {
         List<OrderDetailDTO> allOrderDetails = orderDetailService.getAllOrderDetails();
         return new ResponseEntity<>(new StandardResponse(200, "Success", allOrderDetails), HttpStatus.OK);
     }
-    
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
     public ResponseEntity<?> saveOrder(@RequestBody List<OrderDetailDTO> dtoList){
         orderDetailService.saveOrder(dtoList);

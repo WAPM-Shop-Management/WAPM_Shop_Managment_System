@@ -25,7 +25,7 @@ public class UserController {
         return  userId;
     }
 
-    @GetMapping(path = "")
+    @GetMapping(path = "/login")
     public int loginUser(String tel,String password){
         int userId = userService.loginUser(tel, password);
         return userId;
