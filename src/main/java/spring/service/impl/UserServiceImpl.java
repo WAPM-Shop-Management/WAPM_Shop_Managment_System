@@ -28,12 +28,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public int createUser(UserCreateDTO dto) {
         int userId =0;
-        User user = userRepo.findByNic(dto.getNic());
+        User user = userRepo.findByNicAndTelAndEmail(dto.getNic(),dto.getTelNo(),dto.getEmail());
 
-        if(user != null){
+        if(user == null){
             User userMap = mapper.map(dto, User.class);
             User saveUser = userRepo.save(userMap);
             userId =saveUser.getId();
+        }
+        return userId;
+    }
+
+    @Override
+    public int loginUser(String tel, String password) {
+        User user = userRepo.findByTel(tel);
+        int userId=0;
+
+        if(user !=null){
+            if(user.getPassword().equalsIgnoreCase(password)){
+                userId = user.getId();
+            }else {
+                userId=0;
+            }
         }
         return userId;
     }

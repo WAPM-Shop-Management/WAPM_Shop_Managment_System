@@ -2,11 +2,9 @@ package spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.dto.OrderDetailDTO;
 import spring.service.OrderDetailService;
 import spring.util.StandardResponse;
@@ -34,5 +32,11 @@ public class OrderDetailController {
     public ResponseEntity<?> getAllOrders() {
         List<OrderDetailDTO> allOrderDetails = orderDetailService.getAllOrderDetails();
         return new ResponseEntity<>(new StandardResponse(200, "Success", allOrderDetails), HttpStatus.OK);
+    }
+
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<?> saveOrder(@RequestBody List<OrderDetailDTO> dtoList){
+        orderDetailService.saveOrder(dtoList);
+        return new ResponseEntity<>(new StandardResponse(200,"success",null),HttpStatus.OK);
     }
 }

@@ -2,6 +2,8 @@ package spring.dto;
 
 import lombok.*;
 
+import java.util.Date;
+
 /**
  * Created by Sahan Nimesha on 2022 - Jul
  * In IntelliJ IDEA
@@ -10,6 +12,17 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDetailDTO {
-    private String orderId;
+
+    private int id;
+
+    private int customerId;
+
+    private int itemId;
+
+    private int qty;
+
+    private Date odDate;
+
+    private String odStatus;
 
 }

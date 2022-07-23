@@ -18,20 +18,15 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 @Entity
-public class User {
+public class Item {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String name;
+    private String itemName;
 
-    private String address;
+    private int qty;
 
-    private String email;
-
-    private String tel;
-
-    private String nic;
-
-    private String password;
+    private String image;
 }
