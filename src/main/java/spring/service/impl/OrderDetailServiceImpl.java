@@ -10,6 +10,7 @@ import spring.repo.OrderDetailRepo;
 import spring.service.OrderDetailService;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +35,21 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         List<OrderDetail> all = orderDetailRepo.findAll();
         return mapper.map(all, new TypeToken<List<OrderDetailDTO>>() {
         }.getType());
+    }
+
+    @Override
+    public void saveOrder(List<OrderDetailDTO> orderDetailDTOList) {
+        if(!orderDetailDTOList.isEmpty()){
+            orderDetailDTOList.forEach(orderDetailData ->{
+                orderDetailData.setOdDate(new Date());
+                orderDetailData.setOdStatus("Pending");
+                OrderDetail orderDetail = orderDetailRepo.findById(orderDetailData.getId());
+                if(orderDetail == null){
+                    OrderDetail orderDetail2 = mapper.map(orderDetailData, OrderDetail.class);
+                    orderDetailRepo.save(orderDetail2);
+                }
+            });
+        }
     }
 }
 

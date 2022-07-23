@@ -12,4 +12,6 @@ public interface OrderDetailService {
 
     List<OrderDetailDTO> getAllOrderDetails();
 
+    void saveOrder(List<OrderDetailDTO> orderDetailDTOList);
+
 }

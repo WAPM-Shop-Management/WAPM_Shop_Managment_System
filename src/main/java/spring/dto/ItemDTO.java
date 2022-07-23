@@ -12,19 +12,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCreateDTO {
+public class ItemDTO {
 
     private int id;
 
-    private String name;
+    private String itemName;
 
-    private String address;
+    private int qty;
 
-    private String email;
-
-    private String telNo;
-
-    private String nic;
-
-    private String password;
+    private String image;
 }

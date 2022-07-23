@@ -20,8 +20,15 @@ public class UserController {
     UserService userService;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
-    public Integer createUser(@RequestBody UserCreateDTO dto){
+    public int createUser(@RequestBody UserCreateDTO dto){
         int userId = userService.createUser(dto);
         return  userId;
     }
+
+    @GetMapping(path = "")
+    public int loginUser(String tel,String password){
+        int userId = userService.loginUser(tel, password);
+        return userId;
+    }
+
 }

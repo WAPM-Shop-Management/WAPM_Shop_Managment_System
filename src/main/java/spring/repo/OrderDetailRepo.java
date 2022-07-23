@@ -11,4 +11,6 @@ import spring.entity.OrderDetail;
 @Repository
 public interface OrderDetailRepo extends JpaRepository<OrderDetail, String> {
 
+    OrderDetail findById(Integer id);
+
 }

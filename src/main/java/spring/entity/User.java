@@ -32,4 +32,6 @@ public class User {
     private String tel;
 
     private String nic;
+
+    private String password;
 }

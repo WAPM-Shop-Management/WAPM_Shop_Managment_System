@@ -37,4 +37,19 @@ public class UserServiceImpl implements UserService {
         }
         return userId;
     }
+
+    @Override
+    public int loginUser(String tel, String password) {
+        User user = userRepo.findByTel(tel);
+        int userId=0;
+
+        if(user !=null){
+            if(user.getPassword().equalsIgnoreCase(password)){
+                userId = user.getId();
+            }else {
+                userId=0;
+            }
+        }
+        return userId;
+    }
 }
