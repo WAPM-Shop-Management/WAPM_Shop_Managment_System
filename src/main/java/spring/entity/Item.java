@@ -29,4 +29,6 @@ public class Item {
     private int qty;
 
     private String image;
+
+    private double price;
 }

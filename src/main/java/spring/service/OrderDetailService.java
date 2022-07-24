@@ -1,6 +1,7 @@
 package spring.service;
 
 import spring.dto.OrderDetailDTO;
+import spring.dto.OrderDetailListDTO;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface OrderDetailService {
 
     List<OrderDetailDTO> getAllOrderDetails();
 
-    void saveOrder(List<OrderDetailDTO> orderDetailDTOList);
+    void saveOrder(OrderDetailListDTO orderDetailListDTO);
 
 }

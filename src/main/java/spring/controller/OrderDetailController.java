@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.dto.OrderDetailDTO;
+import spring.dto.OrderDetailListDTO;
 import spring.service.OrderDetailService;
 import spring.util.StandardResponse;
 
@@ -34,9 +35,9 @@ public class OrderDetailController {
         return new ResponseEntity<>(new StandardResponse(200, "Success", allOrderDetails), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<?> saveOrder(@RequestBody List<OrderDetailDTO> dtoList){
-        orderDetailService.saveOrder(dtoList);
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},path = "")
+    public ResponseEntity<?> saveOrder(@RequestBody OrderDetailListDTO orderDetailListDTO){
+        orderDetailService.saveOrder(orderDetailListDTO);
         return new ResponseEntity<>(new StandardResponse(200,"success",null),HttpStatus.OK);
     }
 }
