@@ -5,27 +5,87 @@
 
 package spring.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import spring.dto.ItemDTO;
 import spring.service.ItemService;
-
-import java.util.List;
+import spring.util.StandardResponse;
 
 @RestController
 @RequestMapping("/api/v1/item")
 @CrossOrigin
 public class ItemController {
 
-    @Autowired
-    ItemService itemService;
+    private final ItemService itemService;
 
-    @GetMapping(path = "")
-    public List<ItemDTO> getAllItemList(){
-        List<ItemDTO> itemList = itemService.getAllItem();
-        return itemList;
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
+
+    /**
+     * Get All Items
+     *
+     * @return ItemDto List
+     */
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StandardResponse> getAllItemList() {
+        return new ResponseEntity<>(new StandardResponse(200, "Success", itemService.getAllItem()),
+                HttpStatus.OK);
+    }
+
+    /**
+     * Get Details of Specific Item
+     *
+     * @param itemId ID of item which need to search
+     * @return ItemDto
+     */
+    @GetMapping(value = "/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StandardResponse> getItem(@PathVariable int itemId) {
+
+        return new ResponseEntity<>(new StandardResponse(200, "Success", itemService.getItem(itemId)), HttpStatus.OK);
+    }
+
+    /**
+     * Save New Item
+     *
+     * @param itemDTO Request Body
+     */
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StandardResponse> saveItem(@RequestBody ItemDTO itemDTO) {
+
+        itemService.saveItem(itemDTO);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+    }
+
+    /**
+     * Update Details of Specific Item
+     *
+     * @param itemId  ID of item which need to update
+     * @param itemDTO Request Body
+     */
+    @PutMapping(value = "/{itemId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StandardResponse> updateItem(@PathVariable int itemId,
+                                                       @RequestBody ItemDTO itemDTO) {
+
+        itemDTO.setId(itemId);
+        itemService.updateItem(itemDTO);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+    }
+
+    /**
+     * Update stock quantity of Specific Item
+     *
+     * @param itemId  ID of item which need to update
+     * @param itemDTO Request Body
+     */
+    @PatchMapping(value = "/{itemId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StandardResponse> updateStock(@PathVariable int itemId,
+                                                        @RequestBody ItemDTO itemDTO) {
+
+        itemDTO.setId(itemId);
+        itemService.updateStock(itemDTO);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
     }
 }
