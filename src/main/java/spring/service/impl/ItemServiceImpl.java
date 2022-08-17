@@ -45,13 +45,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void saveItem(ItemDTO itemDTO) {
+    public int saveItem(ItemDTO itemDTO) {
         try {
             log.info("Execute method saveItem params {}", itemDTO);
 
             Item itemEntity = mapper.map(itemDTO, Item.class);
-            itemRepo.save(itemEntity);
-
+            Item save = itemRepo.save(itemEntity);
+            return save.getId();
         } catch (Exception e) {
             log.error("Method saveItem : ", e);
             throw e;

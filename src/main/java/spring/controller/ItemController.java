@@ -55,8 +55,8 @@ public class ItemController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StandardResponse> saveItem(@RequestBody ItemDTO itemDTO) {
 
-        itemService.saveItem(itemDTO);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+        int i = itemService.saveItem(itemDTO);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", i), HttpStatus.OK);
     }
 
     /**
