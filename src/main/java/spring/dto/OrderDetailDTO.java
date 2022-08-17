@@ -21,7 +21,7 @@ public class OrderDetailDTO {
 
     private int qty;
 
-    private Date odDate;
+    private Date odPlaceAt;
 
     private String odStatus;
 

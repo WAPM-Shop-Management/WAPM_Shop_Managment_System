@@ -28,7 +28,7 @@ public class OrderDetail {
 
     private int qty;
 
-    private Date odDate;
+    private Date odPlaceAt;
 
     private String odStatus;
 

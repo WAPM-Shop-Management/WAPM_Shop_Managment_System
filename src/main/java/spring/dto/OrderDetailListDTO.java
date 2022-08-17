@@ -8,21 +8,13 @@ package spring.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class ItemDTO {
+public class OrderDetailListDTO {
 
-    private int id;
-
-    private String itemName;
-
-    private int qty;
-
-    private String image;
-
-    private double price;
+    private List<OrderDetailDTO> orderDetailDTOList;
 }
