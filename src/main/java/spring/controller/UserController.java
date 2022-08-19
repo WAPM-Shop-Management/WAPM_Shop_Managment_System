@@ -16,8 +16,11 @@ import spring.service.UserService;
 @CrossOrigin
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
     public int createUser(@RequestBody UserCreateDTO dto){
