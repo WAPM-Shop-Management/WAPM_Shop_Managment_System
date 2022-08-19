@@ -25,4 +25,6 @@ public class ItemDTO {
     private String image;
 
     private double price;
+
+    private double subTotalPrice;
 }

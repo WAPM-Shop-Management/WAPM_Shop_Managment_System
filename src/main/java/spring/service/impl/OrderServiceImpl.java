@@ -1,10 +1,14 @@
 package spring.service.impl;
 
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import spring.dto.ItemDTO;
+import spring.dto.UserCreateDTO;
+import spring.dto.json.reponse.OrderDetailsResponseDTO;
 import spring.dto.json.request.PlaceOrderRequestDTO;
 import spring.entity.Item;
 import spring.entity.OrderDetail;
@@ -18,6 +22,7 @@ import spring.repository.OrderRepository;
 import spring.repository.UserRepository;
 import spring.service.OrderService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,12 +38,16 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final ModelMapper modelMapper;
 
-    public OrderServiceImpl(UserRepository userRepository, OrderRepository orderRepository, ItemRepository itemRepository, OrderDetailRepository orderDetailRepository) {
+    public OrderServiceImpl(UserRepository userRepository, OrderRepository orderRepository, ItemRepository itemRepository,
+                            OrderDetailRepository orderDetailRepository, ModelMapper modelMapper) {
+
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.orderDetailRepository = orderDetailRepository;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -85,6 +94,61 @@ public class OrderServiceImpl implements OrderService {
 
         }catch (Exception e){
             log.error("Method placeOrder : ", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<OrderDetailsResponseDTO> filterOrderDetails(int customerId, String status) {
+        try {
+            log.info("Execute method filterOrderDetails params customer id {} status {}", customerId, status);
+
+            List<OrderDetailsResponseDTO> orderDetailsResponseDTOS = new ArrayList<>();
+
+            List<Orders> ordersList = orderRepository.filterOrders(customerId, status);
+
+            if(ordersList != null && !ordersList.isEmpty()){
+
+                for (Orders orders : ordersList) {
+
+                    OrderDetailsResponseDTO orderDetailsResponseDTO = new OrderDetailsResponseDTO();
+                    double totalPrice = 0.00;
+
+                    orderDetailsResponseDTO.setId(orders.getId());
+                    orderDetailsResponseDTO.setCustomer(modelMapper.map(orders.getUser(), UserCreateDTO.class));
+                    orderDetailsResponseDTO.getCustomer().setPassword("************");
+                    orderDetailsResponseDTO.setDateOfCompleted(orders.getDateOfCompleted());
+                    orderDetailsResponseDTO.setDateOfPlaced(orders.getDateOfPlaced());
+                    orderDetailsResponseDTO.setOrderStatus(orders.getOrderStatus());
+
+                    List<OrderDetail> orderDetailList = orders.getOrderDetailList();
+                    List<ItemDTO> orderItems = new ArrayList<>();
+
+                    for (OrderDetail orderDetail : orderDetailList) {
+
+                        Item item = orderDetail.getItem();
+
+                        ItemDTO itemDTO = modelMapper.map(item, ItemDTO.class);
+                        itemDTO.setQty(orderDetail.getQty());
+                        itemDTO.setSubTotalPrice((orderDetail.getQty() * item.getPrice()));
+
+                        totalPrice += itemDTO.getSubTotalPrice();
+
+                        orderItems.add(itemDTO);
+
+                    }
+
+                    orderDetailsResponseDTO.setItems(orderItems);
+                    orderDetailsResponseDTO.setTotalOrderPrice(totalPrice);
+
+                    orderDetailsResponseDTOS.add(orderDetailsResponseDTO);
+                }
+            }
+            
+            return orderDetailsResponseDTOS;
+
+        } catch (Exception e) {
+            log.error("Method filterOrderDetails : ", e);
             throw e;
         }
     }

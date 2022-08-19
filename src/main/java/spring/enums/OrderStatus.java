@@ -2,5 +2,5 @@ package spring.enums;
 
 public enum OrderStatus {
 
-    PENDING, PROCESSING, COMPLETED
+    PENDING, PROCESSING, TO_PICK, COMPLETED
 }
