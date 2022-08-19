@@ -2,11 +2,7 @@ package spring.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.*;
 
 /**
  * Created by Sahan Nimesha on 2022 - Jul
@@ -16,20 +12,20 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
+@Setter
+@Getter
 public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int customerId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Orders orders;
 
-    private int itemId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Item item;
 
     private int qty;
-
-    private Date odPlaceAt;
-
-    private String odStatus;
 
 }

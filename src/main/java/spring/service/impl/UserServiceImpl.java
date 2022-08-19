@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.dto.UserCreateDTO;
 import spring.entity.User;
-import spring.repo.UserRepo;
+import spring.repository.UserRepository;
 import spring.service.UserService;
 
 import javax.transaction.Transactional;
@@ -20,7 +20,7 @@ import javax.transaction.Transactional;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepo userRepo;
+    UserRepository userRepository;
 
     @Autowired
     ModelMapper mapper;
@@ -28,11 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int createUser(UserCreateDTO dto) {
         int userId =0;
-        User user = userRepo.findByTel(dto.getTelNo());
+        User user = userRepository.findByTel(dto.getTelNo());
 
         if(user == null){
             User userMap = mapper.map(dto, User.class);
-            User saveUser = userRepo.save(userMap);
+            User saveUser = userRepository.save(userMap);
             userId =saveUser.getId();
         }
         return userId;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int loginUser(String tel, String password) {
-        User user = userRepo.findByTel(tel);
+        User user = userRepository.findByTel(tel);
         int userId=0;
 
         if(user !=null){

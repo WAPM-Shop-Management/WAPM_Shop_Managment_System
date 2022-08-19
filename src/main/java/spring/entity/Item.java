@@ -5,9 +5,7 @@
 
 package spring.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +16,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 @Entity
+@Setter
+@Getter
 public class Item {
 
     @Id

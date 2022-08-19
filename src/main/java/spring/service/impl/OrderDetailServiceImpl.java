@@ -7,11 +7,10 @@ import org.springframework.stereotype.Service;
 import spring.dto.OrderDetailDTO;
 import spring.dto.OrderDetailListDTO;
 import spring.entity.OrderDetail;
-import spring.repo.OrderDetailRepo;
+import spring.repository.OrderDetailRepository;
 import spring.service.OrderDetailService;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -23,18 +22,18 @@ import java.util.List;
 @Transactional
 public class OrderDetailServiceImpl implements OrderDetailService {
 
-    private final OrderDetailRepo orderDetailRepo;
+    private final OrderDetailRepository orderDetailRepository;
     private final ModelMapper mapper;
 
     @Autowired
-    public OrderDetailServiceImpl(OrderDetailRepo orderDetailRepo, ModelMapper mapper) {
-        this.orderDetailRepo = orderDetailRepo;
+    public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository, ModelMapper mapper) {
+        this.orderDetailRepository = orderDetailRepository;
         this.mapper = mapper;
     }
 
     @Override
     public List<OrderDetailDTO> getAllOrderDetails() {
-        List<OrderDetail> all = orderDetailRepo.findAll();
+        List<OrderDetail> all = orderDetailRepository.findAll();
         return mapper.map(all, new TypeToken<List<OrderDetailDTO>>() {
         }.getType());
     }
@@ -46,10 +45,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
                 orderDetailData.setOdPlaceAt(new Date());
                 orderDetailData.setOdStatus("Pending");
-                OrderDetail orderDetail = orderDetailRepo.findById(orderDetailData.getId());
+                OrderDetail orderDetail = orderDetailRepository.findById(orderDetailData.getId());
                 if(orderDetail == null){
                     OrderDetail orderDetail2 = mapper.map(orderDetailData, OrderDetail.class);
-                    orderDetailRepo.save(orderDetail2);
+                    orderDetailRepository.save(orderDetail2);
                 }
             });
         }
