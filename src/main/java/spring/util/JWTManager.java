@@ -2,12 +2,14 @@ package spring.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 import spring.constant.ApplicationConstant;
 
 import javax.crypto.SecretKey;
 import java.util.Calendar;
 import java.util.Date;
 
+@Component
 public class JWTManager {
 
     public String signJWS(String username, String password)  {
@@ -15,7 +17,7 @@ public class JWTManager {
         Date expiration;
         Calendar c = Calendar.getInstance();
         c.setTime(issued);
-        c.add(Calendar.DATE, 1);
+        c.add(Calendar.DATE, 30);
         expiration = c.getTime();
 
         SecretKey secretKey = Keys.hmacShaKeyFor((password + ApplicationConstant.SECRET).getBytes());

@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
 
                     orderDetailsResponseDTO.setId(orders.getId());
                     orderDetailsResponseDTO.setCustomer(modelMapper.map(orders.getUser(), UserCreateDTO.class));
-                    orderDetailsResponseDTO.getCustomer().setPassword("************");
+                    orderDetailsResponseDTO.getCustomer().setPassword(null);
                     orderDetailsResponseDTO.setDateOfCompleted(orders.getDateOfCompleted());
                     orderDetailsResponseDTO.setDateOfPlaced(orders.getDateOfPlaced());
                     orderDetailsResponseDTO.setOrderStatus(orders.getOrderStatus());

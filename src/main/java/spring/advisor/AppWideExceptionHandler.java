@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import spring.exception.CustomException;
+import spring.exception.Oauth2CustomException;
 import spring.util.StandardResponse;
 
 /**
@@ -20,6 +21,12 @@ public class AppWideExceptionHandler {
     public ResponseEntity<StandardResponse> handleCustomException(CustomException ex) {
         StandardResponse response = new StandardResponse(ex.getCode(), ex.getMessage(), ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ExceptionHandler({Oauth2CustomException.class})
+    public ResponseEntity<StandardResponse> handleOauth2CustomException(Oauth2CustomException ex) {
+        StandardResponse response = new StandardResponse(ex.getCode(), ex.getMessage(), ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({RuntimeException.class})

@@ -6,10 +6,13 @@
 package spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.dto.UserCreateDTO;
 import spring.service.UserService;
+import spring.util.StandardResponse;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -23,15 +26,9 @@ public class UserController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
-    public int createUser(@RequestBody UserCreateDTO dto){
-        int userId = userService.createUser(dto);
-        return  userId;
-    }
-
-    @GetMapping(path = "/login")
-    public int loginUser(String tel,String password){
-        int userId = userService.loginUser(tel, password);
-        return userId;
+    public ResponseEntity<StandardResponse> createUser(@RequestBody UserCreateDTO dto){
+        return new ResponseEntity<>(new StandardResponse(200, "Success", userService.createUser(dto)),
+                HttpStatus.OK);
     }
 
 }

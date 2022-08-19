@@ -22,7 +22,7 @@ public class UserCreateDTO {
 
     private String email;
 
-    private String telNo;
+    private String tel;
 
     private String nic;
 
