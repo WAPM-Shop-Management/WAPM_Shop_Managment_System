@@ -5,7 +5,6 @@
 
 package spring.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ public class UserController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
     public ResponseEntity<StandardResponse> createUser(@RequestBody UserCreateDTO dto){
-        return new ResponseEntity<>(new StandardResponse(200, "Success", userService.createUser(dto)),
+        return new ResponseEntity<>(new StandardResponse(200, "The user profile has been successfully created.", userService.createUser(dto)),
                 HttpStatus.OK);
     }
 
@@ -40,7 +39,7 @@ public class UserController {
     @GetMapping(value = "/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StandardResponse> getDashboardDetails() {
 
-        return new ResponseEntity<>(new StandardResponse(200, "Success", dashboardService.getDashboardDetails()),
+        return new ResponseEntity<>(new StandardResponse(200, "The dashboard details have been successfully fetched.", dashboardService.getDashboardDetails()),
                 HttpStatus.OK);
     }
 

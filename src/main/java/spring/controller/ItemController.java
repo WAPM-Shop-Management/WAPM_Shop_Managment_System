@@ -31,7 +31,7 @@ public class ItemController {
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StandardResponse> getAllItemList() {
-        return new ResponseEntity<>(new StandardResponse(200, "Success", itemService.getAllItem()),
+        return new ResponseEntity<>(new StandardResponse(200, "The Item details have been successfully fetched.", itemService.getAllItem()),
                 HttpStatus.OK);
     }
 
@@ -44,7 +44,7 @@ public class ItemController {
     @GetMapping(value = "/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StandardResponse> getItem(@PathVariable int itemId) {
 
-        return new ResponseEntity<>(new StandardResponse(200, "Success", itemService.getItem(itemId)), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "The Item details have been successfully fetched.", itemService.getItem(itemId)), HttpStatus.OK);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ItemController {
     public ResponseEntity<StandardResponse> saveItem(@RequestBody ItemDTO itemDTO) {
 
         int i = itemService.saveItem(itemDTO);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", i), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "The Item has been successfully saved.", i), HttpStatus.OK);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ItemController {
 
         itemDTO.setId(itemId);
         itemService.updateItem(itemDTO);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "The Item details have been successfully updated.", null), HttpStatus.OK);
     }
 
     /**
@@ -86,6 +86,6 @@ public class ItemController {
 
         itemDTO.setId(itemId);
         itemService.updateStock(itemDTO);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "The Item stock has been successfully updated.", null), HttpStatus.OK);
     }
 }

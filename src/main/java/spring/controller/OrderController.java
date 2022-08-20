@@ -29,7 +29,7 @@ public class OrderController {
     public ResponseEntity<StandardResponse> placeNewOrder(@RequestBody PlaceOrderRequestDTO requestDTO) {
 
         orderService.placeOrder(requestDTO);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "The Order has been successfully received.", null), HttpStatus.OK);
     }
 
     /**
@@ -46,7 +46,7 @@ public class OrderController {
         String filterStatus = null;
         if (status != null && !status.equals("ALL")) filterStatus = status;
 
-        return new ResponseEntity<>(new StandardResponse(200, "Success",
+        return new ResponseEntity<>(new StandardResponse(200, "The Order details have been successfully fetched.",
                 orderService.filterOrderDetails(filterCustomerId, filterStatus)), HttpStatus.OK);
     }
 
@@ -61,7 +61,7 @@ public class OrderController {
 
         requestDTO.setId(orderId);
         orderService.changeOrderStatus(requestDTO);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "The Order status has been successfully updated.", null), HttpStatus.OK);
     }
 
 }

@@ -21,7 +21,7 @@ public class OauthController {
 
     @PostMapping(value = "/token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StandardResponse> signInUser(@RequestBody SignInRequestDTO requestDTO) {
-        return new ResponseEntity<>(new StandardResponse(200, "Success", userService.signInUser(requestDTO)),
+        return new ResponseEntity<>(new StandardResponse(200, "The User has been successfully logged into the system.", userService.signInUser(requestDTO)),
                 HttpStatus.OK);
     }
 }

@@ -31,6 +31,6 @@ public class FileUploadController {
 
         itemDTO.setId(itemId);
         itemService.updateItemImage(itemDTO);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "The Image has been successfully updated.", null), HttpStatus.OK);
     }
 }
