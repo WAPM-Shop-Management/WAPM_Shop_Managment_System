@@ -34,6 +34,6 @@ public class MobileNumberValidator {
             throw new CustomException(INVALID_INPUT, "Invalid mobile number");
         }
 
-        return convertedMobileNumber;
+        return convertedMobileNumber.substring(1);
     }
 }

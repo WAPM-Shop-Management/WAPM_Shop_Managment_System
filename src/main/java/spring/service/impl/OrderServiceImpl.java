@@ -21,13 +21,14 @@ import spring.repository.OrderDetailRepository;
 import spring.repository.OrderRepository;
 import spring.repository.UserRepository;
 import spring.service.OrderService;
+import spring.util.SMSGateway;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static spring.constant.ApplicationConstant.RESOURCE_NOT_FOUND;
+import static spring.constant.ApplicationConstant.*;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
@@ -39,15 +40,17 @@ public class OrderServiceImpl implements OrderService {
     private final ItemRepository itemRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ModelMapper modelMapper;
+    private final SMSGateway smsGateway;
 
     public OrderServiceImpl(UserRepository userRepository, OrderRepository orderRepository, ItemRepository itemRepository,
-                            OrderDetailRepository orderDetailRepository, ModelMapper modelMapper) {
+                            OrderDetailRepository orderDetailRepository, ModelMapper modelMapper, SMSGateway smsGateway) {
 
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.modelMapper = modelMapper;
+        this.smsGateway = smsGateway;
     }
 
 
@@ -91,6 +94,11 @@ public class OrderServiceImpl implements OrderService {
                 itemRepository.save(stockItem);
 
             }
+
+            //send sms
+            User user = userOptional.get();
+            // send sms to customer
+            smsGateway.sendRegularSMS(user.getTel(), String.format(NEW_ORDER_REQUEST_CUSTOMER, user.getName(), savedOrder.getId()));
 
         } catch (Exception e) {
             log.error("Method placeOrder : ", e);
@@ -164,6 +172,16 @@ public class OrderServiceImpl implements OrderService {
 
             Orders orders = ordersOptional.get();
             orders.setOrderStatus(requestDTO.getOrderStatus());
+
+            switch (requestDTO.getOrderStatus()){
+                case TO_PICK:
+                    User user = orders.getUser();
+                    smsGateway.sendRegularSMS(user.getTel(), String.format(ORDER_READY_TO_PICKUP, user.getName(), orders.getId()));
+                    break;
+                case COMPLETED:
+                    orders.setDateOfCompleted(new Date());
+                    break;
+            }
 
             orderRepository.save(orders);
         } catch (Exception e) {
