@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.dto.json.request.ChangeOrderStatusRequestDTO;
 import spring.dto.json.request.PlaceOrderRequestDTO;
 import spring.service.OrderService;
 import spring.util.StandardResponse;
@@ -47,6 +48,20 @@ public class OrderController {
 
         return new ResponseEntity<>(new StandardResponse(200, "Success",
                 orderService.filterOrderDetails(filterCustomerId, filterStatus)), HttpStatus.OK);
+    }
+
+    /**
+     * Change Order Status
+     *
+     * @param requestDTO request body
+     */
+    @PatchMapping(value = "/{orderId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StandardResponse> changeOrderStatus(@PathVariable long orderId,
+                                                              @RequestBody ChangeOrderStatusRequestDTO requestDTO) {
+
+        requestDTO.setId(orderId);
+        orderService.changeOrderStatus(requestDTO);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", null), HttpStatus.OK);
     }
 
 }

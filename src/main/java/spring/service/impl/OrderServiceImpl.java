@@ -2,13 +2,13 @@ package spring.service.impl;
 
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import spring.dto.ItemDTO;
 import spring.dto.UserCreateDTO;
 import spring.dto.json.reponse.OrderDetailsResponseDTO;
+import spring.dto.json.request.ChangeOrderStatusRequestDTO;
 import spring.dto.json.request.PlaceOrderRequestDTO;
 import spring.entity.Item;
 import spring.entity.OrderDetail;
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void placeOrder(PlaceOrderRequestDTO placeOrderRequestDTO) {
-        try{
+        try {
             log.info("Execute method placeOrder params {}", placeOrderRequestDTO);
 
             Optional<User> userOptional = userRepository.findById(placeOrderRequestDTO.getCustomerId());
@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
             Orders savedOrder = orderRepository.save(orders);
 
             List<ItemDTO> items = placeOrderRequestDTO.getItems();
-            if(items == null || items.isEmpty())
+            if (items == null || items.isEmpty())
                 throw new CustomException(RESOURCE_NOT_FOUND, "Order items not found");
 
             for (ItemDTO requestedItem : items) {
@@ -78,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
                 itemOptional.orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND, "Item details not found"));
 
                 Item stockItem = itemOptional.get();
-                if(requestedItem.getQty() > stockItem.getQty())
+                if (requestedItem.getQty() > stockItem.getQty())
                     throw new CustomException(RESOURCE_NOT_FOUND, "Can't order too much item quantity than stock");
 
                 orderDetail.setItem(stockItem);
@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Method placeOrder : ", e);
             throw e;
         }
@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
 
             List<Orders> ordersList = orderRepository.filterOrders(customerId, status);
 
-            if(ordersList != null && !ordersList.isEmpty()){
+            if (ordersList != null && !ordersList.isEmpty()) {
 
                 for (Orders orders : ordersList) {
 
@@ -144,11 +144,30 @@ public class OrderServiceImpl implements OrderService {
                     orderDetailsResponseDTOS.add(orderDetailsResponseDTO);
                 }
             }
-            
+
             return orderDetailsResponseDTOS;
 
         } catch (Exception e) {
             log.error("Method filterOrderDetails : ", e);
+            throw e;
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void changeOrderStatus(ChangeOrderStatusRequestDTO requestDTO) {
+        try {
+            log.info("Execute method changeOrderStatus params {} ", requestDTO);
+
+            Optional<Orders> ordersOptional = orderRepository.findById(requestDTO.getId());
+            ordersOptional.orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND, "Order details not found"));
+
+            Orders orders = ordersOptional.get();
+            orders.setOrderStatus(requestDTO.getOrderStatus());
+
+            orderRepository.save(orders);
+        } catch (Exception e) {
+            log.error("Method changeOrderStatus : ", e);
             throw e;
         }
     }
