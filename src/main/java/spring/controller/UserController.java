@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.dto.UserCreateDTO;
+import spring.service.DashboardService;
 import spring.service.UserService;
 import spring.util.StandardResponse;
 
@@ -20,14 +21,26 @@ import spring.util.StandardResponse;
 public class UserController {
 
     private final UserService userService;
+    private final DashboardService dashboardService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, DashboardService dashboardService) {
         this.userService = userService;
+        this.dashboardService = dashboardService;
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE} )
     public ResponseEntity<StandardResponse> createUser(@RequestBody UserCreateDTO dto){
         return new ResponseEntity<>(new StandardResponse(200, "Success", userService.createUser(dto)),
+                HttpStatus.OK);
+    }
+
+    /**
+     * Get Admin Dashboard Details
+     */
+    @GetMapping(value = "/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StandardResponse> getDashboardDetails() {
+
+        return new ResponseEntity<>(new StandardResponse(200, "Success", dashboardService.getDashboardDetails()),
                 HttpStatus.OK);
     }
 
